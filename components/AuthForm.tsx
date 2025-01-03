@@ -15,24 +15,37 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Link from "next/link";
 
-// the form schema object
-const formSchema = z.object({
+// the sign up form schema object
+const signUpFormSchema = z.object({
     fullName: z.string(),
-    email: z.string().email().optional(),
+    email: z.string().email(),
 });
+const signUpDefault = {
+    fullName: "",
+    email:""
+};
+
+// the sign in form schema object
+const signInFormSchema = z.object({
+    fullName: z.string(),
+});
+const signInDefault = {
+    fullName: ""
+}
 
 type FormType = "sign-up" | "sign-in";
 
 const AuthForm = ({type}:{type:FormType}) => {
     const [errorMessage, setErrorMessage] = useState("");
 
+    // choosing form schema object based on form type
+    const formSchema = type==="sign-in" ? signInFormSchema : signUpFormSchema;
+    const defaultValues = type==="sign-in" ? signInDefault : signUpDefault;
+
     // defining the form
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
-        defaultValues:{
-            fullName: "",
-            email:""
-        }
+        defaultValues: defaultValues
     })
 
     // defining submit handler
@@ -46,56 +59,39 @@ const AuthForm = ({type}:{type:FormType}) => {
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
                     <h1 className="form-title">{type==="sign-in" ? "Sign In":"Sign Up"}</h1>
+                    
+                    <FormField
+                        control={form.control}
+                        name="fullName"
+                        render={({ field }) => (
+                            <FormItem>
+                                <div className="shad-form-item">
+                                    <FormLabel className="shad-form-label">Full Name</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Enter your full name." className="shad-input" {...field} />
+                                    </FormControl>
+                                    <FormMessage className="shad-form-message"/>
+                                </div>
+                            </FormItem>
+                        )}
+                    />
+
                     {type === "sign-up" && (
                         <FormField
                             control={form.control}
-                            name="fullName"
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
                                     <div className="shad-form-item">
-                                        <FormLabel className="shad-form-label">Full Name</FormLabel>
+                                        <FormLabel className="shad-form-label">Email Address</FormLabel>
                                         <FormControl>
-                                            <Input placeholder="Enter your full name." className="shad-input" {...field} />
+                                            <Input placeholder="Enter your email address." className="shad-input" {...field} />
                                         </FormControl>
                                         <FormMessage className="shad-form-message"/>
                                     </div>
                                 </FormItem>
                             )}
                         />
-                    )}
-                    {type === "sign-in" && (
-                        <>
-                            <FormField
-                                control={form.control}
-                                name="email"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="shad-form-item">
-                                            <FormLabel className="shad-form-label">Email Address</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter your email address." className="shad-input" {...field} />
-                                            </FormControl>
-                                            <FormMessage className="shad-form-message"/>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={form.control}
-                                name="fullName"
-                                render={({ field }) => (
-                                    <FormItem>
-                                        <div className="shad-form-item">
-                                            <FormLabel className="shad-form-label">Full Name</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Enter your full name." className="shad-input" {...field} />
-                                            </FormControl>
-                                            <FormMessage className="shad-form-message"/>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                        </>
                     )}
 
                     {/* submit button */}
