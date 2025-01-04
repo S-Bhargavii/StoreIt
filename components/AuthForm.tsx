@@ -14,7 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Link from "next/link";
-import {createAccount} from "@/lib/actions/user.actions";
+import {createAccount, signInUser} from "@/lib/actions/user.actions";
 import OtpModal from "./OTPModal";
 
 // the sign up form schema object
@@ -40,10 +40,10 @@ type FormType = "sign-up" | "sign-in";
 const AuthForm = ({type}:{type:FormType}) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [accountId, setAccountId] = useState(null)
-
+    const isSignIn = type==="sign-in";
     // choosing form schema object based on form type
-    const formSchema = type==="sign-in" ? signInFormSchema : signUpFormSchema;
-    const defaultValues = type==="sign-in" ? signInDefault : signUpDefault;
+    const formSchema = isSignIn ? signInFormSchema : signUpFormSchema;
+    const defaultValues = isSignIn ? signInDefault : signUpDefault;
 
     // defining the form
     const form = useForm<z.infer<typeof formSchema>>({
@@ -55,10 +55,18 @@ const AuthForm = ({type}:{type:FormType}) => {
     const onSubmit = async (values: z.infer<typeof formSchema>)=>{
        setErrorMessage("");
        try{
-            const user = await createAccount({
-                fullName : values.fullName || "",
-                email: values.email
-            })  
+            const user = isSignIn  ? 
+                (
+                    await signInUser({
+                        email:values.email
+                    })
+                ):
+                (
+                    await createAccount({
+                    fullName : values.fullName || "",
+                    email: values.email
+                    })
+                );                  
             setAccountId(user.accountId);
        }catch{
         setErrorMessage("Failed to create account. Please try again.");
@@ -70,7 +78,7 @@ const AuthForm = ({type}:{type:FormType}) => {
         <>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="auth-form">
-                    <h1 className="form-title">{type==="sign-in" ? "Sign In":"Sign Up"}</h1>
+                    <h1 className="form-title">{isSignIn ? "Sign In":"Sign Up"}</h1>
                     
                     <FormField
                         control={form.control}
@@ -108,7 +116,7 @@ const AuthForm = ({type}:{type:FormType}) => {
 
                     {/* submit button */}
                     <Button type="submit" className="form-submit-button">
-                        {type==="sign-in"?"Sign In":"Sign Up"}
+                        {isSignIn?"Sign In":"Sign Up"}
                     </Button>
                     
                     {/* error message */}
@@ -117,10 +125,10 @@ const AuthForm = ({type}:{type:FormType}) => {
                     {/* alternate links */}
                     <div className="body-2 flex justify-center">
                         <p className="text-light-100">
-                            {type==="sign-in"?"Don't have an account? ":"Already have an account? "}
+                            {isSignIn?"Don't have an account? ":"Already have an account? "}
                         </p>
-                        <Link href={type==="sign-in"?"/sign-up":"/sign-in"} className="ml-1 font-medium text-brand">
-                            {type==="sign-in"?"Sign Up":"Sign In"}
+                        <Link href={isSignIn?"/sign-up":"/sign-in"} className="ml-1 font-medium text-brand">
+                            {isSignIn?"Sign Up":"Sign In"}
                         </Link>
                     </div>
                 </form>
