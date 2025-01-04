@@ -49,6 +49,9 @@ export const sendEmailOTP = async(email: string) => {
 }
 
 export const createAccount = async({fullName, email}:{fullName: string, email:string}) => {
+    // TO DO : improve this 
+    // 1. Only create the user in the database if the otp is correct -- verify otp before adding user to database
+    // 2. If user already exists, prompt user to sign in instead
     const existingUser = await getUserByEmail(email);
     const accountId = await sendEmailOTP(email);
     if(!accountId) throw new Error("Failed to send OTP");
