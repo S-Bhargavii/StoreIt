@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import Link from "next/link";
 import {createAccount} from "@/lib/actions/user.actions";
+import OtpModal from "./OTPModal";
 
 // the sign up form schema object
 const signUpFormSchema = z.object({
@@ -124,7 +125,7 @@ const AuthForm = ({type}:{type:FormType}) => {
                     </div>
                 </form>
             </Form>
-            {/*OTP Verification*/}
+            {accountId && <OtpModal email={form.getValues('email')} accountId={accountId}/>}
         </>
     )
 };
