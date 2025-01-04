@@ -7,12 +7,31 @@ import { Database } from "lucide-react";
 
 // this client is linked to a specific user -- this restricts the methods ( parts or operations on the database ) that the user can do
 export const createSessionClient = async() => {
-    const client = new Client().setEndpoint(appwriteConfig.endpointUrl).setProject(appwriteConfig.projectId);
-    const session = (await cookies()).get("appwrite-session");
-    if(!session || !session.value) throw new Error("No session exists");
+    const client = new Client().
+                    setEndpoint(appwriteConfig.endpointUrl).
+                    setProject(appwriteConfig.projectId);
+
+    let attempts = 5;
+    let session = null;
+    
+    while (attempts > 0) {
+        try {
+            session = (await cookies()).get("appwrite-session");
+            if (session?.value) {
+                break; // Exit the loop if a valid session is found
+            }
+            throw new Error("No session exists");
+        } catch (error) {
+            console.info("failed to get session info.... trying again");
+            attempts -= 1;
+        }
+    }
+    
+    if (!session?.value) {
+        throw new Error("No session exists after maximum retry attempts");
+    }
 
     client.setSession(session.value);
-    
     return{
         get account(){
             return new Account(client);
@@ -24,7 +43,10 @@ export const createSessionClient = async() => {
 }
 
 export const createAdminClient = async() => {
-    const client = new Client().setEndpoint(appwriteConfig.endpointUrl).setProject(appwriteConfig.projectId).setKey(appwriteConfig.apikey);
+    const client = new Client().
+                    setEndpoint(appwriteConfig.endpointUrl).
+                    setProject(appwriteConfig.projectId).
+                    setKey(appwriteConfig.apikey);
     
     return{
         get account(){
