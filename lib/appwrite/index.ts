@@ -10,8 +10,8 @@ export const createSessionClient = async() => {
     const client = new Client().
                     setEndpoint(appwriteConfig.endpointUrl).
                     setProject(appwriteConfig.projectId);
-
-    let attempts = 5;
+                    
+    let attempts = 10;
     let session = null;
     
     while (attempts > 0) {
@@ -47,7 +47,7 @@ export const createAdminClient = async() => {
                     setEndpoint(appwriteConfig.endpointUrl).
                     setProject(appwriteConfig.projectId).
                     setKey(appwriteConfig.apikey);
-    
+                    
     return{
         get account(){
             return new Account(client);

@@ -5,13 +5,13 @@ import { Button } from './ui/button';
 import Image from 'next/image';
 import { signOutUser } from '@/lib/actions/user.actions';
 
-const Header = () => {
+const Header = ({ownerId, accountId}:{ownerId:string, accountId:string}) => {
   console.log("Rendering the header component");
   return (
     <header className='header'>
         <Search/>
         <div className='header-wrapper'>
-            <FileUploader/>
+            <FileUploader accountId={accountId} ownerId={ownerId}/>
             <form action={async()=>{
               "use server";
               await signOutUser();

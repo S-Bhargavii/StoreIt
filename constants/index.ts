@@ -81,7 +81,14 @@ export const navItems = [
     },
   ];
   
-  export const avatarPlaceholderUrl =
-    "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg";
-  
-  export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+export const avatarPlaceholderUrl =
+  "https://img.freepik.com/free-psd/3d-illustration-person-with-sunglasses_23-2149436188.jpg";
+
+export const MAX_FILE_SIZE = 50 * 1024 * 1024; // 50MB
+
+export const DOCUMENT_EXTENSIONS = [ "pdf", "doc", "docx", "txt", "xls", "xlsx", "csv",
+  "rtf", "ods", "ppt", "odp", "md", "html", "htm", "epub", "pages", "fig", "psd",
+  "ai", "indd", "xd", "sketch", "afdesign", "afphoto", "afphoto"];
+export const IMAGE_EXTENSIONS = ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp"];
+export const VIDEO_EXTENSIONS = ["mp4", "avi", "mov", "mkv", "webm"];
+export const AUDIO_EXTENSIONS = ["mp3", "wav", "ogg", "flac"];
