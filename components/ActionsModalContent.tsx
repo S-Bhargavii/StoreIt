@@ -39,13 +39,13 @@ export const FileDetails = ({file}:{file:Models.Document}) => {
   )
 }
 
-interface Props{
+interface shareInputProps{
     file: Models.Document,
     onInputChange: React.Dispatch<React.SetStateAction<string[]>>,
     onRemove: (email:string) => Promise<boolean>
 }
 
-export const ShareInput = ({file, onInputChange, onRemove}:Props) => {
+export const ShareInput = ({file, onInputChange, onRemove}:shareInputProps) => {
   return (
     <>
         <ImageThumbnail file={file}/>
@@ -84,4 +84,12 @@ export const ShareInput = ({file, onInputChange, onRemove}:Props) => {
         </div>
     </>
   )
+}
+
+export const DeleteConfirmation = ({file}:{file:Models.Document}) =>{
+    return(
+        <p className="delete-confirmation">
+            Are you sure you want to delete {` `} <span className="delete-file-name">{file.name}</span>
+        </p>
+    )
 }

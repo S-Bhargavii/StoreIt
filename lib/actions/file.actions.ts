@@ -117,7 +117,7 @@ export const renameFile = async({fileId, name, extension, path}:{fileId:string, 
     }
 }
 
-export const updateFileUsers = async({fileId, emails, extension, path}:{fileId:string, emails:string[], extension:string, path:string}) => {
+export const updateFileUsers = async({fileId, emails, path}:{fileId:string, emails:string[], path:string}) => {
     const {databases}  = await createAdminClient();
     try{
         const updatedFile = await databases.updateDocument(appwriteConfig.databaseId, appwriteConfig.filesCollectionId, fileId,{users:emails});
@@ -125,5 +125,20 @@ export const updateFileUsers = async({fileId, emails, extension, path}:{fileId:s
         return parseStringify(updatedFile);
     }catch(error){
         handleError(error, "Failed to update users who have access to the file");
+    }
+}
+
+export const deleteFile = async({fileId, bucketFileId, path}:{fileId:string, bucketFileId:string, path:string}) =>{
+    const {databases, storage} = await createAdminClient();
+
+    try{
+        const deletedFile = await databases.deleteDocument(appwriteConfig.databaseId, appwriteConfig.filesCollectionId, fileId);
+        if(deletedFile){
+            await storage.deleteFile(appwriteConfig.bucketId, bucketFileId);
+        }
+        revalidatePath(path);
+        return true;
+    }catch(error){
+        handleError(error, "Failed to delete file");
     }
 }
