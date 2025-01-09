@@ -14,16 +14,28 @@ const handleError = (error: any, message:string) => {
     throw error;
 }
 
-const createQueries = (currentUser : Models.Document, types:string[]) => {
+const createQueries = (
+    currentUser : Models.Document, 
+    types:string[], 
+    searchText:string="", 
+    sort:string="$createdAt-desc", 
+    limit?:number ) => {
     // fetch the documents that are owned by the user or have been shared to the user
     const queries = [
         Query.or(
             [Query.equal("owner", [currentUser.$id]),
             Query.contains("users", [currentUser.email])]
         )
-    ]
+    ];
 
     if(types.length > 0) queries.push(Query.equal("type", types));
+    if(searchText) queries.push(Query.contains("name", searchText));
+    if(limit) queries.push(Query.limit(limit));
+
+    const [sortBy, orderBy] = sort.split("-");
+    queries.push(
+        orderBy==="asc" ? Query.orderAsc(sortBy) : Query.orderDesc(sortBy)
+    );
 
     return queries;
 }
@@ -86,7 +98,7 @@ const createFile = async (bucketId:string, id:string, file:File) => {
     throw error;
 }
 
-export const getFiles = async(type:string) => {
+export const getFiles = async(type:string, searchText:string="", sort:string="$createdAt-desc", limit?:number) => {
     const {databases} = await createAdminClient();
     const types = getFileTypesParams(type);
     try{
@@ -94,7 +106,7 @@ export const getFiles = async(type:string) => {
 
         if(!currentUser) throw new Error("User not found");
 
-        const queries = createQueries(currentUser, types);
+        const queries = createQueries(currentUser, types, searchText, sort, limit);
 
         const files = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.filesCollectionId, queries);
         

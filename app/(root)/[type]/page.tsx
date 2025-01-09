@@ -3,9 +3,15 @@ import Sort from "@/components/Sort";
 import { getFiles } from "@/lib/actions/file.actions";
 import { Models } from "node-appwrite";
 
-const Page = async ({params}: SearchParamProps) => {
+const Page = async ({params, searchParams}: SearchParamProps) => {
+  // params is the word after / 
+  // searchParams are the key value pairs after ?
+
   const type = ((await params)?.type as string ) || "";
-  const files = await getFiles(type);
+  const searchText = ((await searchParams)?.query as string) || "";
+  const sort = ((await searchParams)?.sort as string) || "";
+  
+  const files = await getFiles(type, searchText, sort);
 //   files is a {total: , documents:[]}
   return(
     <div className="page-container">
