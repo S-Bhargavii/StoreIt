@@ -5,7 +5,7 @@ import { Models } from "node-appwrite";
 
 const Page = async ({params}: SearchParamProps) => {
   const type = ((await params)?.type as string ) || "";
-  const files = await getFiles();
+  const files = await getFiles(type);
 //   files is a {total: , documents:[]}
   return(
     <div className="page-container">

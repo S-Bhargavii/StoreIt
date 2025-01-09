@@ -4,7 +4,7 @@ import { createAdminClient } from "../appwrite";
 import {InputFile} from "node-appwrite/file";
 import { appwriteConfig } from "../appwrite/config";
 import { ID, Models, Query } from "node-appwrite";
-import { constructFileURL, convertFileToURL, getFileType, parseStringify } from "../utils";
+import { constructFileURL, convertFileToURL, getFileType, getFileTypesParams, parseStringify } from "../utils";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "./user.actions";
@@ -14,7 +14,7 @@ const handleError = (error: any, message:string) => {
     throw error;
 }
 
-const createQueries = (currentUser : Models.Document) => {
+const createQueries = (currentUser : Models.Document, types:string[]) => {
     // fetch the documents that are owned by the user or have been shared to the user
     const queries = [
         Query.or(
@@ -23,7 +23,7 @@ const createQueries = (currentUser : Models.Document) => {
         )
     ]
 
-    // TO DO: Search, sort, limits...
+    if(types.length > 0) queries.push(Query.equal("type", types));
 
     return queries;
 }
@@ -86,15 +86,15 @@ const createFile = async (bucketId:string, id:string, file:File) => {
     throw error;
 }
 
-export const getFiles = async() => {
+export const getFiles = async(type:string) => {
     const {databases} = await createAdminClient();
-
+    const types = getFileTypesParams(type);
     try{
         const currentUser = await getCurrentUser();
 
         if(!currentUser) throw new Error("User not found");
 
-        const queries = createQueries(currentUser);
+        const queries = createQueries(currentUser, types);
 
         const files = await databases.listDocuments(appwriteConfig.databaseId, appwriteConfig.filesCollectionId, queries);
         
