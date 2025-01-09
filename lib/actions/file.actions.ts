@@ -98,7 +98,7 @@ const createFile = async (bucketId:string, id:string, file:File) => {
     throw error;
 }
 
-export const getFiles = async(type:string, searchText:string="", sort:string="$createdAt-desc", limit?:number) => {
+export const getFiles = async(type:string="", searchText:string="", sort:string="$createdAt-desc", limit?:number) => {
     const {databases} = await createAdminClient();
     const types = getFileTypesParams(type);
     try{
