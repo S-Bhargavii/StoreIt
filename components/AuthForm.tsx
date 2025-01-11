@@ -18,22 +18,14 @@ import {createAccount, signInUser} from "@/lib/actions/user.actions";
 import OtpModal from "./OTPModal";
 
 // the sign up form schema object
-const signUpFormSchema = z.object({
+const formSchema = z.object({
     fullName: z.string(),
     email: z.string().email(),
 });
-const signUpDefault = {
+const defaultValues = {
     fullName: "",
     email:""
 };
-
-// the sign in form schema object
-const signInFormSchema = z.object({
-    email: z.string().email(),
-});
-const signInDefault = {
-    email: ""
-}
 
 type FormType = "sign-up" | "sign-in";
 
@@ -41,9 +33,6 @@ const AuthForm = ({type}:{type:FormType}) => {
     const [errorMessage, setErrorMessage] = useState("");
     const [accountId, setAccountId] = useState(null)
     const isSignIn = type==="sign-in";
-    // choosing form schema object based on form type
-    const formSchema = isSignIn ? signInFormSchema : signUpFormSchema;
-    const defaultValues = isSignIn ? signInDefault : signUpDefault;
 
     // defining the form
     const form = useForm<z.infer<typeof formSchema>>({
