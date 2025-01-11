@@ -2,8 +2,6 @@
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
@@ -18,8 +16,16 @@ import { Button } from "./ui/button";
 import FileUploader from "./FileUploader";
 import { signOutUser } from "@/lib/actions/user.actions";
 
+interface Props{
+  $id:string, 
+  accountId:string, 
+  fullName:string, 
+  email:string, 
+  avatar:string
+}
 
-const MobileNavigation = ({fullName, email, avatar}:{fullName:string, email:string, avatar:string}) => {
+const MobileNavigation = ({ $id: ownerId,
+  accountId,fullName, email, avatar}:Props) => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
@@ -89,7 +95,7 @@ const MobileNavigation = ({fullName, email, avatar}:{fullName:string, email:stri
           <Separator className="my-5 bg-light-200/20"/>
 
           <div className="flex flex-col justify-between gap-5 pb-5">
-            <FileUploader/> 
+            <FileUploader ownerId={ownerId} accountId={accountId}/> 
             <Button
               type="submit"
               className="mobile-sign-out-button"

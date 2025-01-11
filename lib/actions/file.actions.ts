@@ -4,7 +4,7 @@ import { createAdminClient, createSessionClient } from "../appwrite";
 import {InputFile} from "node-appwrite/file";
 import { appwriteConfig } from "../appwrite/config";
 import { ID, Models, Query } from "node-appwrite";
-import { constructFileURL, convertFileToURL, getFileType, getFileTypesParams, parseStringify } from "../utils";
+import { constructFileURL, getFileType, getFileTypesParams, parseStringify } from "../utils";
 import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "./user.actions";

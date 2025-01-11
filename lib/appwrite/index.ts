@@ -3,7 +3,6 @@
 import {Account, Avatars, Client, Databases, Storage} from "node-appwrite";
 import { appwriteConfig } from "./config";
 import { cookies } from "next/headers";
-import { Database } from "lucide-react";
 
 // this client is linked to a specific user -- this restricts the methods ( parts or operations on the database ) that the user can do
 export const createSessionClient = async() => {
@@ -23,6 +22,7 @@ export const createSessionClient = async() => {
             throw new Error("No session exists");
         } catch (error) {
             console.info("failed to get session info.... trying again");
+            console.debug(error);
             attempts -= 1;
         }
     }

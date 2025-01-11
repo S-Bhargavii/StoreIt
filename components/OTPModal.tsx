@@ -3,19 +3,16 @@
 import {
     AlertDialog,
     AlertDialogAction,
-    AlertDialogCancel,
     AlertDialogContent,
     AlertDialogDescription,
     AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
 
 import {
     InputOTP,
     InputOTPGroup,
-    InputOTPSeparator,
     InputOTPSlot,
 } from "@/components/ui/input-otp"
 import Image from "next/image";
@@ -85,7 +82,7 @@ const OtpModal = ({email, accountId}:{email:string, accountId:string}) => {
                             Submit
                         </AlertDialogAction>
                         <div className="subtitle-2 mt-2 text-center text-light-100">
-                            Didn't get a code ? 
+                            <span>Didn&apos;t get a code?</span>
                             <Button type="button" variant="link" className="pl-1 text-brand" onClick={handleResend}>
                                 Click to resend.
                             </Button>

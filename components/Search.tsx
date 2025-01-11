@@ -70,7 +70,7 @@ const Search = () => {
             {results.length > 0 ? 
             (
               results.map((file)=>
-                <li key={file.$id} className="flex items-center justify-between">
+                <li key={file.$id} className="flex items-center justify-between" onClick={()=>handleClickItem(file)}>
                   <div className="flex cursor-pointer items-center gap-4">
                     <Thumbnail 
                       type={file.type} 

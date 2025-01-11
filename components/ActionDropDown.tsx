@@ -3,11 +3,9 @@
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogFooter,
     DialogHeader,
     DialogTitle,
-    DialogTrigger,
   } from "@/components/ui/dialog"
 
 
@@ -61,28 +59,35 @@ const ActionDropDown = ({file}:{file:Models.Document}) => {
   }
   
   const handleRename = async () => {
-    const ret : boolean = await renameFile({fileId: file.$id, name, extension: file.extension, path}).
-                            then(()=>true).catch(()=>false);
-    return ret;
+    const ret = await renameFile({fileId: file.$id, name, extension: file.extension, path})
+    if(ret){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   const handleShare = async() => {
     // TO DO - the user the file has been shared with can't remove the owner
-    const ret : boolean = await updateFileUsers({fileId: file.$id, emails, path}).
-                            then(()=>true).catch(()=>false);
-    return ret;
+    const ret = await updateFileUsers({fileId: file.$id, emails, path})
+    if(ret){
+      return true;
+    }else{
+      return false;
+    }
   }
 
   const handleDelete = async() => {
-    const ret : boolean = await deleteFile({fileId: file.$id, bucketFileId: file.bucketFileId, path}).
-                            then(()=>true).catch(()=>false);
-    return ret;
+    const ret = await deleteFile({fileId: file.$id, bucketFileId: file.bucketFileId, path});
+    if(ret){
+      return true;
+    }
+    return false;
   }
 
   const handleRemoveUser = async (email:string) => {
     const updatedEmails : string[] = emails.filter((e)=>{e!== email});
-    const ret : boolean = await updateFileUsers({fileId: file.$id, emails: updatedEmails, path}).
-                            then(()=>true).catch(()=>false);
+    const ret = await updateFileUsers({fileId: file.$id, emails: updatedEmails, path});
     if(ret) setEmails(updatedEmails);
     return ret;
   }
