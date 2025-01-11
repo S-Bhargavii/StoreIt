@@ -166,7 +166,22 @@ export const constructDownloadURL = (bucketFileId:string) => {
   return `${process.env.NEXT_PUBLIC_APPWRITE_ENDPOINT}/storage/buckets/${process.env.NEXT_PUBLIC_APPWRITE_BUCKET}/files/${bucketFileId}/download?project=${process.env.NEXT_PUBLIC_APPWRITE_PROJECT}`
 }
 
-export const getUsageSummary = (totalSpace:any) => {
+interface FileSpace {
+  size: number;
+  latestDate: string;
+}
+
+interface TotalSpace {
+  document: FileSpace;
+  image: FileSpace;
+  video: FileSpace;
+  audio: FileSpace;
+  other: FileSpace;
+  used: number, 
+  all: number
+}
+
+export const getUsageSummary = (totalSpace: TotalSpace) => {
   return [
     {
       title:"Documents",
