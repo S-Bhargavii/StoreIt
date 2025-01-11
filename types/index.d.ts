@@ -17,4 +17,6 @@ declare interface ActionType {
     label: string;
     icon: string;
     value: string;
-  }
+}
+
+declare type FileType = "document" | "image" | "video" | "audio" | "other";
