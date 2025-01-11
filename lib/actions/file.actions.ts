@@ -9,7 +9,7 @@ import { error } from "console";
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "./user.actions";
 
-const handleError = (error: any, message:string) => {
+const handleError = (error: unknown, message:string) => {
     console.log(error, message);
     throw error;
 }
@@ -179,7 +179,7 @@ export const getTotalSpace = async() => {
 
         files.documents.forEach((file)=>{
             const fileType = file.type as FileType; 
-            // this is type casting to FileType - anything not there in filetype would result in an error
+            // this is type casting to FileType - unknownthing not there in filetype would result in an error
             totalSpace[fileType].size += file.size;
             totalSpace.used += file.size
 
