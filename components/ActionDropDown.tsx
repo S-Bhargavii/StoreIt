@@ -86,7 +86,7 @@ const ActionDropDown = ({file}:{file:Models.Document}) => {
   }
 
   const handleRemoveUser = async (email:string) => {
-    const updatedEmails : string[] = emails.filter((e)=>{e!== email});
+    const updatedEmails : string[] = emails.filter((e)=>(e!== email));
     const ret = await updateFileUsers({fileId: file.$id, emails: updatedEmails, path});
     if(ret) setEmails(updatedEmails);
     return ret;
