@@ -5,6 +5,9 @@ import { getCurrentUser } from "@/lib/actions/user.actions"
 import { redirect } from "next/navigation"
 import { Toaster } from "@/components/ui/toaster"
 
+// to force the page to be rendered dynamically
+export const dynamic = 'force-dynamic';
+
 const layout = async ({children}:{children: React.ReactNode}) => {
 
   const currentUser = await getCurrentUser();
