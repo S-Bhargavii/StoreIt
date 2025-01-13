@@ -13,7 +13,7 @@
 <h1>🔋 Features</h2>
 <b>🔑 User Authentication</b>
 <br/>
-Securely sign up, log in, and log out using Appwrite's robust authentication system.
+Sign up and sign in securely with Appwrite's robust authentication system using email-based OTP verification.
 <br/>
 <br/>
 
